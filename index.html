@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensory Worlds & Communication - Interactive Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-teal: #5EEAD4;
+            --deep-teal: #14B8A6;
+            --soft-purple: #C084FC;
+            --warm-rose: #FDA4AF;
+            --calm-blue: #93C5FD;
+            --sage-green: #87A878;
+            --earth-green: #6B8E23;
+            --midnight: #1E293B;
+            --slate: #475569;
+            --warm-gray: #6B6B6B;
+            --pearl: #F8FAFC;
+            --cream: #FFF8E7;
+            --gradient-calm: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-nature: linear-gradient(135deg, #5EEAD4 0%, #93C5FD 100%);
+            --gradient-warm: linear-gradient(135deg, #FDA4AF 0%, #C084FC 100%);
+            --gradient-earth: linear-gradient(135deg, #87A878 0%, #7BA7BC 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #87A87815 0%, #93C5FD15 100%);
+            min-height: 100vh;
+            color: var(--midnight);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating background elements */
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.25;
+            animation: float 25s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-circle1 {
+            width: 350px;
+            height: 350px;
+            background: var(--sage-green);
+            top: -100px;
+            right: -100px;
+        }
+
+        .bg-circle2 {
+            width: 400px;
+            height: 400px;
+            background: var(--calm-blue);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -8s;
+        }
+
+        .bg-circle3 {
+            width: 280px;
+            height: 280px;
+            background: var(--soft-purple);
+            top: 40%;
+            right: 15%;
+            animation-delay: -15s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: var(--gradient-earth);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: var(--slate);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Navigation Pills */
+        .nav-pills {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-pill {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background: white;
+            border: 2px solid transparent;
+            color: var(--slate);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .nav-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .nav-pill.active {
+            background: var(--gradient-earth);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-earth);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+
+        .card h2 {
+            color: var(--midnight);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-earth);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Sensory Systems Grid */
+        .sensory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .sensory-card {
+            background: linear-gradient(135deg, var(--pearl) 0%, white 100%);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px solid rgba(135, 168, 120, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .sensory-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(135, 168, 120, 0.2);
+            border-color: var(--sage-green);
+        }
+
+        .sensory-card.expanded {
+            grid-column: span 2;
+            border-color: var(--sage-green);
+            background: linear-gradient(135deg, rgba(135, 168, 120, 0.1) 0%, white 100%);
+        }
+
+        .sensory-card h3 {
+            color: var(--earth-green);
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sensory-card p {
+            color: var(--slate);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .sensory-details {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid rgba(135, 168, 120, 0.2);
+        }
+
+        .sensory-card.expanded .sensory-details {
+            display: block;
+            animation: slideDown 0.4s ease;
+        }
+
+        /* Interactive Sliders */
+        .sensitivity-selector {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(147, 197, 253, 0.05) 0%, rgba(192, 132, 252, 0.05) 100%);
+            border-radius: 12px;
+        }
+
+        .sensitivity-selector h4 {
+            color: var(--deep-teal);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .slider-container label {
+            min-width: 120px;
+            font-weight: 600;
+            color: var(--slate);
+            font-size: 0.9rem;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, var(--calm-blue), var(--pearl), var(--warm-rose));
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--sage-green);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--sage-green);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: none;
+        }
+
+        .slider-value {
+            min-width: 100px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--earth-green);
+            font-size: 0.9rem;
+        }
+
+        /* Stations Grid */
+        .stations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .station-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .station-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border-color: var(--sage-green);
+        }
+
+        .station-card h3 {
+            color: var(--earth-green);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .station-card p {
+            color: var(--slate);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .station-btn {
+            padding: 0.75rem 2rem;
+            background: var(--gradient-earth);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(135, 168, 120, 0.3);
+            width: 100%;
+        }
+
+        .station-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(135, 168, 120, 0.4);
+        }
+
+        /* Interactive Drawing Canvas */
+        #sensoryMapCanvas {
+            border: 3px solid var(--sage-green);
+            border-radius: 12px;
+            cursor: crosshair;
+            background: white;
+            display: block;
+            margin: 1.5rem auto;
+            touch-action: none;
+        }
+
+        .canvas-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .color-btn.active {
+            border-color: var(--midnight);
+            transform: scale(1.15);
+        }
+
+        /* Communication Practice */
+        .scenario-card {
+            background: linear-gradient(135deg, rgba(253, 164, 175, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--warm-rose);
+        }
+
+        .scenario-card h4 {
+            color: var(--deep-teal);
+            margin-bottom: 0.75rem;
+        }
+
+        .scenario-card p {
+            color: var(--slate);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .script-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--sage-green);
+            font-style: italic;
+            color: var(--earth-green);
+            margin-top: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 2rem;
+            background: var(--gradient-earth);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(135, 168, 120, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(135, 168, 120, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--earth-green);
+            border: 2px solid var(--sage-green);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(135, 168, 120, 0.1);
+        }
+
+        /* Text Areas */
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(135, 168, 120, 0.3);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--sage-green);
+            box-shadow: 0 0 0 3px rgba(135, 168, 120, 0.1);
+        }
+
+        /* Checkbox Lists */
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, rgba(135, 168, 120, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .checklist li:hover {
+            background: linear-gradient(135deg, rgba(135, 168, 120, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%);
+        }
+
+        .checklist input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Results Display */
+        .result-display {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+            border: 2px solid var(--sage-green);
+            display: none;
+        }
+
+        .result-display.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-section {
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(135, 168, 120, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .result-section h4 {
+            color: var(--earth-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-section p {
+            color: var(--slate);
+            line-height: 1.6;
+        }
+
+        /* Affirmation Box */
+        .affirmation-box {
+            background: linear-gradient(135deg, rgba(135, 168, 120, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid var(--sage-green);
+            margin: 2rem 0;
+        }
+
+        .affirmation-box p {
+            color: var(--earth-green);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
+            .card { padding: 1.5rem; }
+            .nav-pills { flex-direction: column; align-items: center; }
+            .sensory-grid { grid-template-columns: 1fr; }
+            .stations-grid { grid-template-columns: 1fr; }
+            .sensory-card.expanded { grid-column: span 1; }
+        }
+
+        /* Accessibility indicator */
+        .accessibility-note {
+            background: rgba(135, 168, 120, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--sage-green);
+            color: var(--slate);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="bg-circle bg-circle1"></div>
+    <div class="bg-circle bg-circle2"></div>
+    <div class="bg-circle bg-circle3"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Sensory Worlds & Communication</h1>
+            <p class="subtitle">Understanding Your Sensory Experience & Honoring Your Needs</p>
+        </div>
+
+        <!-- Accessibility Note -->
+        <div class="accessibility-note">
+            <strong>💚 Neurodivergent-Affirming Space:</strong> Move, fidget, stim, take breaks, or engage in whatever way supports your nervous system. There's no right way to participate. Your sensory needs are valid.
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-pills">
+            <button class="nav-pill active" onclick="showPage(0)">🧘 Ground & Arrive</button>
+            <button class="nav-pill" onclick="showPage(1)">🧠 Learn About Sensory Processing</button>
+            <button class="nav-pill" onclick="showPage(2)">🗺️ Map Your Sensory Profile</button>
+            <button class="nav-pill" onclick="showPage(3)">🎨 Exploration Stations</button>
+            <button class="nav-pill" onclick="showPage(4)">💬 Practice Communication</button>
+            <button class="nav-pill" onclick="showPage(5)">✨ Integrate & Affirm</button>
+        </div>
+
+        <!-- Page 0: Grounding -->
+        <div class="page active" id="page0">
+            <div class="card">
+                <h2>
+                    <div class="icon">🧘</div>
+                    Sensory Awareness Grounding
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Before we explore sensory processing, let's take a moment to notice your current sensory state. This helps build awareness of how your nervous system experiences the world right now.
+                </p>
+
+                <div style="background: linear-gradient(135deg, rgba(135, 168, 120, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%); padding: 2rem; border-radius: 16px;">
+                    <h3 style="color: var(--earth-green); margin-bottom: 1.5rem;">Notice Your Sensory Experience</h3>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">👁️ Vision</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">Notice the lighting in this space. Does it feel comfortable, too bright, or too dim? What colors or objects draw your attention?</p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">👂 Sound</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">What sounds are present right now? Are they pleasant, neutral, or overwhelming? Notice both external sounds and any internal sounds like your heartbeat or breath.</p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">🤲 Touch</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">What textures are you in contact with? Temperature of the air on your skin? Notice if anything feels scratchy, smooth, warm, or cool.</p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">👃 Smell</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">Are there any scents present? Sometimes we notice smells only when we tune in. Are they pleasant or uncomfortable?</p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">🏃 Movement & Body Position</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">Notice how your body is positioned. Do you feel grounded? Is there tension anywhere? Does your body want to move?</p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">💫 Internal Sensations</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">Notice your breath, heartbeat, hunger, energy level. What's your body telling you about its current state?</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 12px; border-left: 4px solid var(--sage-green);">
+                    <h4 style="color: var(--earth-green); margin-bottom: 1rem;">How are you arriving today?</h4>
+                    <textarea id="arrivalReflection" placeholder="Optional: Describe your sensory state in one word, a sentence, or however feels right... Or simply notice without writing." style="min-height: 80px;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 1: Psychoeducation -->
+        <div class="page" id="page1">
+            <div class="card">
+                <h2>
+                    <div class="icon">🧠</div>
+                    Understanding Sensory Processing
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Sensory processing is how our nervous system receives and interprets information from the world. Many neurodivergent people experience sensory processing differences - this is neurological, not a character flaw or something to "get over."
+                </p>
+
+                <div style="background: linear-gradient(135deg, rgba(253, 164, 175, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--earth-green); margin-bottom: 1rem;">The 8 Sensory Systems</h3>
+                    <p style="color: var(--slate); line-height: 1.7; margin-bottom: 1rem;">
+                        We actually have 8 sensory systems, not just 5! Click each to learn more.
+                    </p>
+                </div>
+
+                <div class="sensory-grid">
+                    <div class="sensory-card" onclick="toggleSensoryCard(this, 'visual')">
+                        <h3>👁️ Visual</h3>
+                        <p>How we process light, color, movement, and visual information</p>
+                        <div class="sensory-details">
+                            <p><strong>Hyper-sensitivity examples:</strong> Fluorescent lights feel painful, busy patterns overwhelming, difficulty with eye contact</p>
+                            <p><strong>Hypo-sensitivity examples:</strong> Need bright colors, drawn to moving objects, seek visual stimulation</p>
+                        </div>
+                    </div>
+
+                    <div class="sensory-card" onclick="toggleSensoryCard(this, 'auditory')">
+                        <h3>👂 Auditory</h3>
+                        <p>Processing sound, volume, pitch, and auditory patterns</p>
+                        <div class="sensory-details">
+                            <p><strong>Hyper-sensitivity examples:</strong> Background noise prevents focus, certain sounds feel painful, difficulty filtering conversations</p>
+                            <p><strong>Hypo-sensitivity examples:</strong> Need loud music, may not respond to name, seek auditory input</p>
+                        </div>
+                    </div>
+
+                    <div class="sensory-card" onclick="toggleSensoryCard(this, 'tactile')">
+                        <h3>🤲 Tactile</h3>
+                        <p>Touch, texture, temperature, and physical contact</p>
+                        <div class="sensory-details">
+                            <p><strong>Hyper-sensitivity examples:</strong> Clothing tags unbearable, light touch painful, avoid messy textures</p>
+                            <p><strong>Hypo-sensitivity examples:</strong> Need firm pressure, may not notice temperature extremes, seek texture exploration</p>
+                        </div>
+                    </div>
+
+                    <div class="sensory-card" onclick="toggleSensoryCard(this, 'olfactory')">
+                        <h3>👃 Olfactory</h3>
+                        <p>Processing smells and chemical information</p>
+                        <div class="sensory-details">
+                            <p><strong>Hyper-sensitivity examples:</strong> Perfumes trigger headaches, food smells overwhelming, notice subtle odors</p>
+                            <p><strong>Hypo-sensitivity examples:</strong> May not notice strong odors, seek scents, difficulty detecting spoiled food</p>
+                        </div>
+                    </div>
+
+                    <div class="sensory-card" onclick="toggleSensoryCard(this, 'gustatory')">
+                        <h3>👅 Gustatory</h3>
+                        <p>Taste and oral sensory processing</p>
+                        <div class="sensory-details">
+                            <p><strong>Hyper-sensitivity examples:</strong> Strong reactions to flavors, food textures difficult, limited food preferences</p>
+                            <p><strong>Hypo-sensitivity examples:</strong> Prefer intense flavors, may chew on non-food items, seek crunchy foods</p>
+                        </div>
+                    </div>
+
+                    <div class="sensory-card" onclick="toggleSensoryCard(this, 'vestibular')">
+                        <h3>🎢 Vestibular</h3>
+                        <p>Balance, spatial orientation, and movement through space</p>
+                        <div class="sensory-details">
+                            <p><strong>Hyper-sensitivity examples:</strong> Motion sickness, fear of heights, dislike sudden movements</p>
+                            <p><strong>Hypo-sensitivity examples:</strong> Seek spinning/swinging, constant movement, love rollercoasters</p>
+                        </div>
+                    </div>
+
+                    <div class="sensory-card" onclick="toggleSensoryCard(this, 'proprioceptive')">
+                        <h3>💪 Proprioceptive</h3>
+                        <p>Body awareness, joint position, and muscle feedback</p>
+                        <div class="sensory-details">
+                            <p><strong>Hyper-sensitivity examples:</strong> Overwhelmed by exercise, avoid physical activity, prefer stillness</p>
+                            <p><strong>Hypo-sensitivity examples:</strong> Need heavy work, crash into things, seek deep pressure</p>
+                        </div>
+                    </div>
+
+                    <div class="sensory-card" onclick="toggleSensoryCard(this, 'interoceptive')">
+                        <h3>🫀 Interoceptive</h3>
+                        <p>Internal body signals - hunger, thirst, pain, emotions</p>
+                        <div class="sensory-details">
+                            <p><strong>Hyper-sensitivity examples:</strong> Overwhelmed by body signals, every sensation feels intense, difficulty regulating</p>
+                            <p><strong>Hypo-sensitivity examples:</strong> Don't notice hunger/thirst, delayed pain response, difficulty identifying emotions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sensory Diet Concept -->
+            <div class="card">
+                <h2>
+                    <div class="icon">🍽️</div>
+                    The Sensory Diet Concept
+                </h2>
+                <p style="color: var(--slate); line-height: 1.7; margin-bottom: 1.5rem;">
+                    Just like we need balanced nutrition, our nervous systems need balanced sensory input throughout the day. A "sensory diet" is a personalized plan of activities that provide the sensory input your body needs to stay regulated.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div style="background: linear-gradient(135deg, rgba(147, 197, 253, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%); padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">🌅 Morning Sensory Needs</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">Heavy work activities, bright light exposure, alerting sensory input</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(253, 164, 175, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%); padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">☀️ Midday Regulation</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">Movement breaks, proprioceptive input, sensory check-ins</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(135, 168, 120, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%); padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">🌙 Evening Wind-Down</h4>
+                        <p style="color: var(--slate); line-height: 1.6;">Calming sensory input, dim lighting, reduced stimulation</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(135, 168, 120, 0.1); border-radius: 12px; border-left: 4px solid var(--sage-green);">
+                    <p style="color: var(--earth-green); font-weight: 600; margin-bottom: 0.5rem;">Key Insight:</p>
+                    <p style="color: var(--slate); line-height: 1.7;">
+                        Sensory breaks aren't indulgent - they're neurological necessities. Meeting needs proactively prevents overwhelm, meltdowns, and shutdowns.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cost of Masking -->
+            <div class="card">
+                <h2>
+                    <div class="icon">😷</div>
+                    The Cost of Sensory Masking
+                </h2>
+                <p style="color: var(--slate); line-height: 1.7; margin-bottom: 1.5rem;">
+                    Many neurodivergent people learn to suppress or hide their sensory needs to fit in. This "sensory masking" has real consequences:
+                </p>
+
+                <ul class="checklist">
+                    <li>
+                        <input type="checkbox" id="mask1" disabled>
+                        <label for="mask1">Sensory overload and eventual meltdowns or shutdowns</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="mask2" disabled>
+                        <label for="mask2">Chronic stress and nervous system dysregulation</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="mask3" disabled>
+                        <label for="mask3">Physical symptoms: headaches, muscle tension, digestive issues</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="mask4" disabled>
+                        <label for="mask4">Emotional exhaustion and identity confusion</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="mask5" disabled>
+                        <label for="mask5">Disconnection from body's wisdom and authentic needs</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="mask6" disabled>
+                        <label for="mask6">Delayed processing of sensory experiences leading to crashes later</label>
+                    </li>
+                </ul>
+
+                <div style="margin-top: 2rem; padding: 2rem; background: linear-gradient(135deg, rgba(135, 168, 120, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%); border-radius: 16px;">
+                    <h3 style="color: var(--earth-green); margin-bottom: 1rem;">Unmasking is Self-Advocacy</h3>
+                    <p style="color: var(--slate); line-height: 1.7;">
+                        Honoring your sensory needs isn't being "difficult" or "demanding" - it's recognizing that your nervous system is wired differently, and that's valid. Accommodating yourself is an act of self-respect and authenticity.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Sensory Profile Mapping -->
+        <div class="page" id="page2">
+            <div class="card">
+                <h2>
+                    <div class="icon">🗺️</div>
+                    Map Your Sensory Profile
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Use these sliders to map where you fall on the sensitivity spectrum for each sensory system. Most people have a mixed profile - hyper-sensitive in some areas, hypo-sensitive in others.
+                </p>
+
+                <div class="sensitivity-selector">
+                    <h4>Rate your sensitivity for each system:</h4>
+                    <p style="color: var(--slate); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        Left = Hypo-sensitive (under-responsive, seeking input) | Middle = Typical | Right = Hyper-sensitive (over-responsive, avoiding input)
+                    </p>
+
+                    <div class="slider-container">
+                        <label>👁️ Visual:</label>
+                        <input type="range" id="visualSlider" min="1" max="5" value="3" oninput="updateSliderValue(this, 'visualValue')">
+                        <span class="slider-value" id="visualValue">Typical</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label>👂 Auditory:</label>
+                        <input type="range" id="auditorySlider" min="1" max="5" value="3" oninput="updateSliderValue(this, 'auditoryValue')">
+                        <span class="slider-value" id="auditoryValue">Typical</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label>🤲 Tactile:</label>
+                        <input type="range" id="tactileSlider" min="1" max="5" value="3" oninput="updateSliderValue(this, 'tactileValue')">
+                        <span class="slider-value" id="tactileValue">Typical</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label>👃 Olfactory:</label>
+                        <input type="range" id="olfactorySlider" min="1" max="5" value="3" oninput="updateSliderValue(this, 'olfactoryValue')">
+                        <span class="slider-value" id="olfactoryValue">Typical</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label>👅 Gustatory:</label>
+                        <input type="range" id="gustatorySlider" min="1" max="5" value="3" oninput="updateSliderValue(this, 'gustatoryValue')">
+                        <span class="slider-value" id="gustatoryValue">Typical</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label>🎢 Vestibular:</label>
+                        <input type="range" id="vestibularSlider" min="1" max="5" value="3" oninput="updateSliderValue(this, 'vestibularValue')">
+                        <span class="slider-value" id="vestibularValue">Typical</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label>💪 Proprioceptive:</label>
+                        <input type="range" id="proprioceptiveSlider" min="1" max="5" value="3" oninput="updateSliderValue(this, 'proprioceptiveValue')">
+                        <span class="slider-value" id="proprioceptiveValue">Typical</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label>🫀 Interoceptive:</label>
+                        <input type="range" id="interoceptiveSlider" min="1" max="5" value="3" oninput="updateSliderValue(this, 'interoceptiveValue')">
+                        <span class="slider-value" id="interoceptiveValue">Typical</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Mapping Activity -->
+            <div class="card">
+                <h2>
+                    <div class="icon">🎨</div>
+                    Draw Your Sensory Map
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 1.5rem; line-height: 1.7;">
+                    Create a visual representation of your sensory world. Use colors to show what helps you regulate (calming inputs) vs what overwhelms you.
+                </p>
+
+                <canvas id="sensoryMapCanvas" width="800" height="500"></canvas>
+
+                <div class="canvas-controls">
+                    <button class="color-btn" style="background: #93C5FD;" onclick="changeDrawColor('#93C5FD', this)"></button>
+                    <button class="color-btn" style="background: #FDA4AF;" onclick="changeDrawColor('#FDA4AF', this)"></button>
+                    <button class="color-btn" style="background: #87A878;" onclick="changeDrawColor('#87A878', this)"></button>
+                    <button class="color-btn" style="background: #C084FC;" onclick="changeDrawColor('#C084FC', this)"></button>
+                    <button class="color-btn" style="background: #5EEAD4;" onclick="changeDrawColor('#5EEAD4', this)"></button>
+                    <button class="color-btn" style="background: #1E293B;" onclick="changeDrawColor('#1E293B', this)"></button>
+                    <button class="btn btn-secondary" onclick="clearCanvas()" style="margin-left: 1rem;">Clear Canvas</button>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(135, 168, 120, 0.1); border-radius: 8px;">
+                    <p style="color: var(--slate); font-size: 0.9rem;">
+                        <strong>Ideas:</strong> Map sensory triggers in red/pink, regulation strategies in blue/green, draw your ideal sensory space, create patterns that represent different sensory experiences, or let your hand move intuitively.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Reflection Questions -->
+            <div class="card">
+                <h2>
+                    <div class="icon">💭</div>
+                    Sensory Profile Reflection
+                </h2>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        What sensory inputs consistently overwhelm you?
+                    </label>
+                    <textarea id="overwhelmInputs" placeholder="Example: Fluorescent lights give me headaches, unexpected loud noises make me shut down, scratchy fabrics are unbearable..."></textarea>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        What sensory experiences help you feel grounded and regulated?
+                    </label>
+                    <textarea id="regulatingInputs" placeholder="Example: Deep pressure from weighted blankets, rhythmic rocking, listening to bass-heavy music, being in nature..."></textarea>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        Which sensory needs have you been suppressing or masking?
+                    </label>
+                    <textarea id="maskedNeeds" placeholder="Example: I force myself to tolerate bright offices even though it drains me, I don't ask people not to wear perfume, I push through sensory discomfort to seem 'normal'..."></textarea>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn" onclick="saveSensoryProfile()">Save My Sensory Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Exploration Stations -->
+        <div class="page" id="page3">
+            <div class="card">
+                <h2>
+                    <div class="icon">🎨</div>
+                    Sensory Exploration Stations
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Choose a station to explore sensory awareness through different modalities. You can spend time at one station or rotate between them - honor what your nervous system needs.
+                </p>
+
+                <div class="stations-grid">
+                    <div class="station-card" onclick="openStation('movement')">
+                        <h3>🏃 Movement & Proprioception</h3>
+                        <p>Explore different types of movement and body awareness to understand your proprioceptive and vestibular needs.</p>
+                        <button class="station-btn">Enter Station</button>
+                    </div>
+
+                    <div class="station-card" onclick="openStation('writing')">
+                        <h3>✍️ Writing & Reflection</h3>
+                        <p>Use journaling prompts to process your sensory experiences, patterns, and needs through written expression.</p>
+                        <button class="station-btn">Enter Station</button>
+                    </div>
+
+                    <div class="station-card" onclick="openStation('creative')">
+                        <h3>🎨 Creative Expression</h3>
+                        <p>Express your sensory world through art - what overwhelms you, what soothes you, your ideal sensory environment.</p>
+                        <button class="station-btn">Enter Station</button>
+                    </div>
+
+                    <div class="station-card" onclick="openStation('soundscape')">
+                        <h3>🎵 Soundscape Creation</h3>
+                        <p>Explore your auditory needs by identifying sounds that regulate you vs sounds that overwhelm you.</p>
+                        <button class="station-btn">Enter Station</button>
+                    </div>
+
+                    <div class="station-card" onclick="openStation('body')">
+                        <h3>🫀 Body Scan & Interoception</h3>
+                        <p>Practice noticing internal body signals and sensations to build interoceptive awareness.</p>
+                        <button class="station-btn">Enter Station</button>
+                    </div>
+
+                    <div class="station-card" onclick="openStation('intuitive')">
+                        <h3>🌈 Open/Intuitive Exploration</h3>
+                        <p>Engage with sensory exploration in whatever way calls to you - create your own practice or simply be.</p>
+                        <button class="station-btn">Enter Station</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Station Content Modals would appear here dynamically -->
+            <div id="stationContent" class="card" style="display: none;">
+                <!-- Content populated by JavaScript when station is opened -->
+            </div>
+        </div>
+
+        <!-- Page 4: Communication Practice -->
+        <div class="page" id="page4">
+            <div class="card">
+                <h2>
+                    <div class="icon">💬</div>
+                    Practice Communicating Sensory Needs
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Advocating for your sensory needs can feel vulnerable, especially if you've been told you're "too sensitive" or "dramatic." These practice scenarios help build confidence in self-advocacy.
+                </p>
+
+                <div class="scenario-card">
+                    <h4>Scenario 1: At Work - Fluorescent Lighting</h4>
+                    <p><strong>Situation:</strong> The overhead fluorescent lights at work trigger headaches and make it hard to focus.</p>
+                    <p><strong>Communication goal:</strong> Request accommodation without apologizing for your needs</p>
+                    
+                    <div class="script-box">
+                        <strong>Script Template:</strong><br>
+                        "I want to let you know that the fluorescent lighting impacts my ability to focus and causes headaches. I work best with softer, indirect lighting. Would it be possible for me to [use a desk lamp instead / sit near a window / work in a different area]? This accommodation would help me do my best work."
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                            Practice writing your own version:
+                        </label>
+                        <textarea id="scenario1Response" placeholder="How would you communicate this need in your own words?"></textarea>
+                    </div>
+                </div>
+
+                <div class="scenario-card">
+                    <h4>Scenario 2: Social Setting - Noise Level</h4>
+                    <p><strong>Situation:</strong> Friends want to meet at a loud, crowded restaurant but that environment overwhelms your auditory system.</p>
+                    <p><strong>Communication goal:</strong> Suggest alternative without feeling guilty</p>
+                    
+                    <div class="script-box">
+                        <strong>Script Template:</strong><br>
+                        "I'd love to hang out with you all! I'm sensitive to noise levels, and loud restaurants make it hard for me to process conversation and enjoy myself. Could we meet at [quieter restaurant / earlier time / outdoor space] instead? I want to be present and engaged, and this would help me do that."
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                            Practice writing your own version:
+                        </label>
+                        <textarea id="scenario2Response" placeholder="How would you communicate this need in your own words?"></textarea>
+                    </div>
+                </div>
+
+                <div class="scenario-card">
+                    <h4>Scenario 3: At Home - Scent Sensitivity</h4>
+                    <p><strong>Situation:</strong> A housemate uses strong-scented cleaning products that trigger migraines.</p>
+                    <p><strong>Communication goal:</strong> Assert boundary around shared space</p>
+                    
+                    <div class="script-box">
+                        <strong>Script Template:</strong><br>
+                        "I need to talk to you about something that affects my health. I have scent sensitivity, and strong fragrances trigger migraines for me. Would you be willing to use unscented cleaning products in shared spaces? I'm happy to provide some alternatives that work well. This is a genuine medical need, not a preference."
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                            Practice writing your own version:
+                        </label>
+                        <textarea id="scenario3Response" placeholder="How would you communicate this need in your own words?"></textarea>
+                    </div>
+                </div>
+
+                <div class="scenario-card">
+                    <h4>Scenario 4: Leaving Event Early - Sensory Overload</h4>
+                    <p><strong>Situation:</strong> You're at a social event and feel sensory overload building. You need to leave before shutdown.</p>
+                    <p><strong>Communication goal:</strong> Exit gracefully without over-explaining</p>
+                    
+                    <div class="script-box">
+                        <strong>Script Template:</strong><br>
+                        "I've really enjoyed being here, and I'm noticing I'm reaching my sensory capacity. I'm going to head out now to take care of myself. Thank you for understanding - it's not about the event, it's about honoring my nervous system's needs."
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                            Practice writing your own version:
+                        </label>
+                        <textarea id="scenario4Response" placeholder="How would you communicate this need in your own words?"></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 2rem; background: linear-gradient(135deg, rgba(135, 168, 120, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%); border-radius: 16px;">
+                    <h3 style="color: var(--earth-green); margin-bottom: 1rem;">Key Communication Principles</h3>
+                    <ul style="color: var(--slate); line-height: 2; list-style: none; padding-left: 0;">
+                        <li>✓ State your need clearly without apologizing</li>
+                        <li>✓ Explain the impact, not just the preference</li>
+                        <li>✓ Offer alternatives when possible</li>
+                        <li>✓ Use "I need" language, not "I'm sorry but..."</li>
+                        <li>✓ Remember: accommodations are equity, not special treatment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Custom Scenario Creator -->
+            <div class="card">
+                <h2>
+                    <div class="icon">✏️</div>
+                    Create Your Own Communication Script
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Think of a situation where you need to advocate for a sensory accommodation. Write out what you'd like to say.
+                </p>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        Describe the situation:
+                    </label>
+                    <textarea id="customSituation" placeholder="Example: My coworker microwaves fish in the small office kitchen and the smell makes me nauseated..."></textarea>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        What sensory need do you want to communicate?
+                    </label>
+                    <textarea id="customNeed" placeholder="Example: I need the shared space to be free of strong food odors..."></textarea>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        Draft your communication script:
+                    </label>
+                    <textarea id="customScript" placeholder="Write how you would communicate this need clearly and assertively..."></textarea>
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="btn" onclick="saveCommScript()">Save My Communication Script</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Integration & Affirmation -->
+        <div class="page" id="page5">
+            <div class="card">
+                <h2>
+                    <div class="icon">✨</div>
+                    Integration & Reflection
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Let's integrate what you've learned and explored about your sensory world today.
+                </p>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        What did you learn about your sensory profile today?
+                    </label>
+                    <textarea id="learningReflection" placeholder="Insights, patterns, realizations about how your nervous system experiences the world..."></textarea>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        What's one accommodation you're committing to trying this week?
+                    </label>
+                    <textarea id="accommodationCommitment" placeholder="A specific sensory accommodation you'll implement for yourself..."></textarea>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--midnight); font-weight: 600;">
+                        What would you want the neurotypical world to know about sensory differences?
+                    </label>
+                    <textarea id="worldMessage" placeholder="What you wish others understood about sensory processing..."></textarea>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn" onclick="generateIntegrationSummary()">Generate My Integration Summary</button>
+                </div>
+
+                <div id="integrationSummary" class="result-display">
+                    <!-- Summary will appear here -->
+                </div>
+            </div>
+
+            <!-- Affirmation -->
+            <div class="affirmation-box">
+                <h3 style="color: var(--earth-green); margin-bottom: 1.5rem; font-size: 1.5rem;">Sensory Self-Advocacy Affirmation</h3>
+                <p>My sensory needs are valid and deserve accommodation.</p>
+                <p>What overwhelms me is not a personal failing.</p>
+                <p>Advocating for my nervous system is an act of self-respect.</p>
+                <p>I trust my body's wisdom about what it needs.</p>
+                <p>My sensory differences are part of my authentic self.</p>
+            </div>
+
+            <!-- Resources -->
+            <div class="card">
+                <h2>
+                    <div class="icon">📚</div>
+                    Resources & Next Steps
+                </h2>
+                
+                <div style="padding: 1.5rem; background: linear-gradient(135deg, rgba(135, 168, 120, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%); border-radius: 12px;">
+                    <h3 style="color: var(--earth-green); margin-bottom: 1rem;">Building Your Sensory Toolkit</h3>
+                    <ul style="color: var(--slate); line-height: 2;">
+                        <li>💡 <strong>Identify your sensory triggers:</strong> Keep a log of what overwhelms you</li>
+                        <li>🛠️ <strong>Create a sensory emergency kit:</strong> Headphones, sunglasses, fidgets, etc.</li>
+                        <li>📅 <strong>Build in sensory breaks:</strong> Schedule regulation time proactively</li>
+                        <li>🗣️ <strong>Practice self-advocacy:</strong> Start with low-stakes situations</li>
+                        <li>🤝 <strong>Educate your support system:</strong> Help them understand your needs</li>
+                        <li>🌱 <strong>Unmask gradually:</strong> Start honoring your sensory needs in safe spaces</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 12px; border-left: 4px solid var(--sage-green);">
+                    <h4 style="color: var(--earth-green); margin-bottom: 0.75rem;">Remember:</h4>
+                    <p style="color: var(--slate); line-height: 1.7;">
+                        This work of understanding and honoring your sensory needs is ongoing. Be patient with yourself as you learn what works for your nervous system. Every act of self-advocacy, no matter how small, is meaningful.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        function showPage(pageIndex) {
+            const pages = document.querySelectorAll('.page');
+            const pills = document.querySelectorAll('.nav-pill');
+            
+            pages.forEach((page, index) => {
+                page.classList.toggle('active', index === pageIndex);
+            });
+            
+            pills.forEach((pill, index) => {
+                pill.classList.toggle('active', index === pageIndex);
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle Sensory Card Details
+        function toggleSensoryCard(card) {
+            const wasExpanded = card.classList.contains('expanded');
+            
+            // Close all cards
+            document.querySelectorAll('.sensory-card').forEach(c => {
+                c.classList.remove('expanded');
+            });
+
+            // Open clicked card if it wasn't already expanded
+            if (!wasExpanded) {
+                card.classList.add('expanded');
+            }
+        }
+
+        // Update Slider Values
+        function updateSliderValue(slider, valueId) {
+            const value = parseInt(slider.value);
+            const labels = ['Seeking Input', 'Mildly Under', 'Typical', 'Mildly Over', 'Avoiding Input'];
+            document.getElementById(valueId).textContent = labels[value - 1];
+        }
+
+        // Drawing Canvas
+        let canvas, ctx, isDrawing = false;
+        let currentColor = '#93C5FD';
+
+        window.addEventListener('load', () => {
+            canvas = document.getElementById('sensoryMapCanvas');
+            if (canvas) {
+                ctx = canvas.getContext('2d');
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                // Touch support
+                canvas.addEventListener('touchstart', startDrawing);
+                canvas.addEventListener('touchmove', draw);
+                canvas.addEventListener('touchend', stopDrawing);
+
+                // Mouse support
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseout', stopDrawing);
+            }
+        });
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            let x, y;
+            
+            if (e.type.startsWith('touch')) {
+                e.preventDefault();
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else {
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            let x, y;
+            
+            if (e.type.startsWith('touch')) {
+                e.preventDefault();
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else {
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            }
+
+            ctx.strokeStyle = currentColor;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function changeDrawColor(color, btn) {
+            currentColor = color;
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function clearCanvas() {
+            if (confirm('Clear your sensory map?')) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // Save Functions
+        function saveSensoryProfile() {
+            const overwhelm = document.getElementById('overwhelmInputs').value;
+            const regulating = document.getElementById('regulatingInputs').value;
+            const masked = document.getElementById('maskedNeeds').value;
+
+            if (!overwhelm && !regulating && !masked) {
+                alert('Please fill in at least one reflection to save your profile.');
+                return;
+            }
+
+            alert('✓ Sensory profile saved! You can revisit this anytime to track changes in your sensory awareness.');
+        }
+
+        function saveCommScript() {
+            const situation = document.getElementById('customSituation').value;
+            const need = document.getElementById('customNeed').value;
+            const script = document.getElementById('customScript').value;
+
+            if (!situation || !need || !script) {
+                alert('Please fill in all fields to save your communication script.');
+                return;
+            }
+
+            alert('✓ Communication script saved! Practice this before your real conversation to build confidence.');
+        }
+
+        function generateIntegrationSummary() {
+            const learning = document.getElementById('learningReflection').value;
+            const commitment = document.getElementById('accommodationCommitment').value;
+            const message = document.getElementById('worldMessage').value;
+
+            if (!learning || !commitment) {
+                alert('Please complete at least the learning and commitment sections.');
+                return;
+            }
+
+            const summaryDiv = document.getElementById('integrationSummary');
+            summaryDiv.innerHTML = `
+                <h3 style="color: var(--earth-green); margin-bottom: 1.5rem;">Your Sensory Journey Integration</h3>
+                
+                ${learning ? `
+                <div class="result-section">
+                    <h4>💡 Key Learnings</h4>
+                    <p>${learning}</p>
+                </div>
+                ` : ''}
+                
+                ${commitment ? `
+                <div class="result-section">
+                    <h4>🎯 Your Commitment</h4>
+                    <p>${commitment}</p>
+                </div>
+                ` : ''}
+                
+                ${message ? `
+                <div class="result-section">
+                    <h4>🌍 Message to the World</h4>
+                    <p>${message}</p>
+                </div>
+                ` : ''}
+                
+                <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(135, 168, 120, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%); border-radius: 12px;">
+                    <p style="color: var(--earth-green); font-weight: 600; text-align: center;">
+                        🌱 Every step toward honoring your sensory needs is an act of self-advocacy and authenticity. Keep going.
+                    </p>
+                </div>
+            `;
+            
+            summaryDiv.classList.add('show');
+            summaryDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Station Opening (simplified version - full implementation would have modals)
+        function openStation(stationType) {
+            alert(`Opening ${stationType} station! In a full implementation, this would open an interactive module with guided activities specific to this modality.`);
+        }
+
+        // Set first active color button
+        window.addEventListener('load', () => {
+            const firstColorBtn = document.querySelector('.color-btn');
+            if (firstColorBtn) {
+                firstColorBtn.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
